@@ -1,0 +1,41 @@
+name: Docker
+type: container
+description: Docker container runtime
+version: "1.0"
+endpoints:
+    - path: /version
+      method: GET
+      description: Version
+      weight: 0.2
+    - path: /v1.41/containers
+      method: GET
+      description: Containers
+      weight: 0.2
+    - path: /v1.41/images
+      method: GET
+      description: Images
+      weight: 0.2
+headers:
+    - name: content-type
+      pattern: application/json
+      required: true
+      weight: 0.25
+body_patterns:
+    - field: Version
+      json_path: Version
+      required: false
+      weight: 0.25
+    - field: ApiVersion
+      json_path: ApiVersion
+      required: false
+      weight: 0.25
+error_patterns: []
+versions: []
+deployment:
+    default_port: "2375"
+    service_name: docker
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

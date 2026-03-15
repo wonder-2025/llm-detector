@@ -1,0 +1,41 @@
+name: Deepchecks
+type: ml_validation
+description: Deepchecks ML validation
+version: "1.0"
+endpoints:
+    - path: /api/v1
+      method: GET
+      description: Deepchecks API
+      weight: 0.2
+    - path: /api/v1/suites
+      method: GET
+      description: Suites
+      weight: 0.2
+    - path: /api/v1/checks
+      method: GET
+      description: Checks
+      weight: 0.2
+headers:
+    - name: x-request-id
+      pattern: '[a-zA-Z0-9-]+'
+      required: false
+      weight: 0.25
+body_patterns:
+    - field: suites
+      json_path: suites
+      required: false
+      weight: 0.25
+    - field: checks
+      json_path: checks
+      required: false
+      weight: 0.25
+error_patterns: []
+versions: []
+deployment:
+    default_port: "443"
+    service_name: deepchecks
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

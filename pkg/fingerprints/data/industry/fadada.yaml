@@ -1,0 +1,33 @@
+name: 法大大
+type: legal_ai
+description: 法大大电子合同AI
+version: "1.0"
+endpoints:
+    - path: /api/v1
+      method: GET
+      description: API
+      weight: 0.2
+    - path: /api/v1/contract
+      method: POST
+      description: Contract
+      weight: 0.2
+headers:
+    - name: x-request-id
+      pattern: '[a-zA-Z0-9-]+'
+      required: false
+      weight: 0.25
+body_patterns:
+    - field: result
+      json_path: result
+      required: false
+      weight: 0.25
+error_patterns: []
+versions: []
+deployment:
+    default_port: "443"
+    service_name: fadada
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

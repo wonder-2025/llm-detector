@@ -1,0 +1,86 @@
+name: DeepSeek
+provider: DeepSeek
+type: open_source
+description: DeepSeek model family
+version: "1.0"
+response:
+    headers:
+        - name: x-deepseek-version
+          pattern: .*
+          required: false
+          weight: 0.25
+    body_patterns:
+        - field: model
+          pattern: deepseek
+          required: false
+          weight: 0.25
+behavior:
+    max_tokens: 64000
+    supports_function_calling: true
+    supports_vision: false
+    supports_json_mode: true
+    response_time_ms: 400-3000
+    streaming_supported: true
+tests:
+    chinese_understanding: 0.15
+    code_generation: 0.2
+    context_window: 0.1
+    instruction_following: 0.1
+    math_reasoning: 0.2
+    reasoning_quality: 0.1
+    system_prompt_leak: 0.15
+fingerprints:
+    - test: math
+      prompt: Calculate 13 * 17
+      expected_keywords:
+        - "221"
+      weight: 0.2
+    - test: self_identify
+      prompt: What AI model are you? Who created you?
+      expected_patterns:
+        - (?i)deepseek
+        - (?i)deep seek
+      forbidden_patterns:
+        - (?i)gpt-?4
+        - (?i)openai
+        - (?i)claude
+        - (?i)llama
+      weight: 0.2
+    - test: code
+      prompt: Write a Python function to reverse a string
+      expected_keywords:
+        - def
+        - return
+      weight: 0.2
+    - test: chinese
+      prompt: 解释'朝三暮四'这个成语的意思
+      expected_keywords:
+        - 猴子
+        - 比喻
+      weight: 0.15
+    - test: reasoning
+      prompt: If it takes 5 machines 5 minutes to make 5 widgets...
+      expected_keywords:
+        - 5 minutes
+      weight: 0.15
+variants:
+    - name: DeepSeek-V3
+      pattern: deepseek.*v3
+      features:
+        - latest
+        - best_performance
+    - name: DeepSeek-Coder
+      pattern: deepseek.*coder
+      features:
+        - code_specialized
+        - programming
+    - name: DeepSeek-Chat
+      pattern: deepseek.*chat
+      features:
+        - conversational
+        - general_purpose
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

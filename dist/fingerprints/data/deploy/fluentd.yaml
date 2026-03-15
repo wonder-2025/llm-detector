@@ -1,0 +1,33 @@
+name: Fluentd
+type: logging
+description: Fluentd log collector
+version: "1.0"
+endpoints:
+    - path: /api
+      method: GET
+      description: API
+      weight: 0.2
+    - path: /api/plugins
+      method: GET
+      description: Plugins
+      weight: 0.2
+headers:
+    - name: x-request-id
+      pattern: '[a-zA-Z0-9-]+'
+      required: false
+      weight: 0.25
+body_patterns:
+    - field: plugins
+      json_path: plugins
+      required: false
+      weight: 0.25
+error_patterns: []
+versions: []
+deployment:
+    default_port: "24224"
+    service_name: fluentd
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

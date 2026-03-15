@@ -1,0 +1,41 @@
+name: Pachyderm
+type: data_versioning
+description: Pachyderm data versioning
+version: "1.0"
+endpoints:
+    - path: /api
+      method: GET
+      description: Pachyderm API
+      weight: 0.2
+    - path: /api/v2/repos
+      method: GET
+      description: Repositories
+      weight: 0.2
+    - path: /api/v2/pipelines
+      method: GET
+      description: Pipelines
+      weight: 0.2
+headers:
+    - name: x-request-id
+      pattern: '[a-zA-Z0-9-]+'
+      required: false
+      weight: 0.25
+body_patterns:
+    - field: repo
+      json_path: repo
+      required: false
+      weight: 0.25
+    - field: pipeline
+      json_path: pipeline
+      required: false
+      weight: 0.25
+error_patterns: []
+versions: []
+deployment:
+    default_port: "80"
+    service_name: pachyderm
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

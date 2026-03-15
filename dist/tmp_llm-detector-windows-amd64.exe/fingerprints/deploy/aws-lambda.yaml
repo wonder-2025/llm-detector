@@ -1,0 +1,42 @@
+name: AWS Lambda
+type: serverless
+description: AWS Lambda serverless compute
+version: "1.0"
+endpoints:
+    - path: /2015-03-31/functions
+      method: GET
+      description: List functions
+      weight: 0.2
+    - path: /2015-03-31/functions/invocations
+      method: POST
+      description: Invoke
+      weight: 0.2
+headers:
+    - name: x-amzn-requestid
+      pattern: '[a-zA-Z0-9-]+'
+      required: true
+      weight: 0.25
+    - name: x-amzn-remapped-content-length
+      pattern: '[0-9]+'
+      required: false
+      weight: 0.25
+body_patterns:
+    - field: Functions
+      json_path: Functions
+      required: false
+      weight: 0.25
+    - field: FunctionName
+      json_path: FunctionName
+      required: false
+      weight: 0.25
+error_patterns: []
+versions: []
+deployment:
+    default_port: "443"
+    service_name: lambda
+    region_based: true
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

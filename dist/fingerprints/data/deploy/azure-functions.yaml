@@ -1,0 +1,34 @@
+name: Azure Functions
+type: serverless
+description: Azure Functions serverless
+version: "1.0"
+endpoints:
+    - path: /api
+      method: GET
+      description: Functions API
+      weight: 0.2
+    - path: /runtime/webhooks
+      method: POST
+      description: Webhooks
+      weight: 0.2
+headers:
+    - name: x-ms-request-id
+      pattern: '[a-zA-Z0-9-]+'
+      required: false
+      weight: 0.25
+body_patterns:
+    - field: value
+      json_path: value
+      required: false
+      weight: 0.25
+error_patterns: []
+versions: []
+deployment:
+    default_port: "443"
+    service_name: azure-functions
+    region_based: true
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

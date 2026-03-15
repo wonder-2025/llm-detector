@@ -1,0 +1,65 @@
+name: LiteLLM
+type: api_gateway
+description: LiteLLM API Gateway
+version: "1.0"
+endpoints:
+    - path: /v1/models
+      method: GET
+      description: List models
+      weight: 0.2
+    - path: /health
+      method: GET
+      description: Health check
+      weight: 0.2
+    - path: /health/readiness
+      method: GET
+      description: Readiness check
+      weight: 0.2
+    - path: /health/liveliness
+      method: GET
+      description: Liveliness check
+      weight: 0.2
+    - path: /model/info
+      method: GET
+      description: Model information
+      weight: 0.2
+headers:
+    - name: x-litellm-version
+      pattern: '[0-9]+\.[0-9]+'
+      required: false
+      weight: 0.25
+    - name: x-litellm-call-id
+      pattern: .*
+      required: false
+      weight: 0.25
+body_patterns:
+    - field: data
+      json_path: data
+      required: false
+      weight: 0.25
+    - field: status
+      json_path: status
+      required: false
+      weight: 0.25
+error_patterns:
+    - pattern: No healthy deployment
+      type: no_deployment
+      weight: 0.15
+    - pattern: Rate limit exceeded
+      type: rate_limit
+      weight: 0.15
+versions:
+    - pattern: 1.x
+      features:
+        - multi_provider
+        - load_balancing
+        - rate_limiting
+deployment:
+    default_port: "4000"
+    docker_image: ghcr.io/berriai/litellm
+    process_name: litellm
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

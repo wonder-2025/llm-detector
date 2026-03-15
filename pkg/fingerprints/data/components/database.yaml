@@ -1,0 +1,16 @@
+name: Database
+type: ""
+description: 数据库组件
+version: "1.0"
+endpoints: []
+headers: []
+body_patterns: []
+error_patterns: []
+versions: []
+deployment:
+    default_port: ""
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

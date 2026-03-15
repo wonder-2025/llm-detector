@@ -1,0 +1,46 @@
+name: FastAPI
+type: web_framework
+description: FastAPI web framework
+version: "1.0"
+endpoints:
+    - path: /docs
+      method: GET
+      description: Swagger UI
+      weight: 0.2
+    - path: /redoc
+      method: GET
+      description: ReDoc documentation
+      weight: 0.2
+    - path: /openapi.json
+      method: GET
+      description: OpenAPI schema
+      weight: 0.2
+    - path: /health
+      method: GET
+      description: Health check
+      weight: 0.2
+headers:
+    - name: server
+      pattern: (?i)(uvicorn|hypercorn|daphne)
+      required: false
+      weight: 0.25
+body_patterns:
+    - field: openapi
+      json_path: openapi
+      required: false
+      weight: 0.25
+    - field: info
+      json_path: info
+      required: false
+      weight: 0.25
+error_patterns: []
+versions: []
+deployment:
+    default_port: "8000"
+    docker_image: tiangolo/uvicorn-gunicorn-fastapi
+    process_name: uvicorn
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

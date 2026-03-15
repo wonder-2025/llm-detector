@@ -1,0 +1,23 @@
+name: WhyLabs
+provider: WhyLabs
+type: ml_monitoring
+description: WhyLabs data and ML monitoring
+version: "1.0"
+response:
+    headers: []
+    body_patterns: []
+behavior:
+    max_tokens: 0
+    supports_function_calling: false
+    supports_vision: false
+    supports_json_mode: false
+    response_time_ms: ""
+    streaming_supported: false
+tests: {}
+fingerprints: []
+variants: []
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

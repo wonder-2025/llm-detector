@@ -1,0 +1,49 @@
+name: Elasticsearch
+type: search_analytics
+description: Elasticsearch search and analytics
+version: "1.0"
+endpoints:
+    - path: /
+      method: GET
+      description: Root
+      weight: 0.2
+    - path: /_cluster/health
+      method: GET
+      description: Health
+      weight: 0.2
+    - path: /_cat/indices
+      method: GET
+      description: Indices
+      weight: 0.2
+headers:
+    - name: x-elastic-product
+      pattern: Elasticsearch
+      required: false
+      weight: 0.25
+    - name: content-type
+      pattern: application/json
+      required: true
+      weight: 0.25
+body_patterns:
+    - field: cluster_name
+      json_path: cluster_name
+      required: false
+      weight: 0.25
+    - field: version
+      json_path: version
+      required: false
+      weight: 0.25
+    - field: tagline
+      pattern: You Know, for Search
+      required: false
+      weight: 0.25
+error_patterns: []
+versions: []
+deployment:
+    default_port: "9200"
+    service_name: elasticsearch
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

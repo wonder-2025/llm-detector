@@ -1,0 +1,41 @@
+name: Jaeger
+type: tracing
+description: Jaeger distributed tracing
+version: "1.0"
+endpoints:
+    - path: /api
+      method: GET
+      description: API
+      weight: 0.2
+    - path: /api/traces
+      method: GET
+      description: Traces
+      weight: 0.2
+    - path: /api/services
+      method: GET
+      description: Services
+      weight: 0.2
+headers:
+    - name: x-request-id
+      pattern: '[a-zA-Z0-9-]+'
+      required: false
+      weight: 0.25
+body_patterns:
+    - field: data
+      json_path: data
+      required: false
+      weight: 0.25
+    - field: services
+      json_path: services
+      required: false
+      weight: 0.25
+error_patterns: []
+versions: []
+deployment:
+    default_port: "16686"
+    service_name: jaeger
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

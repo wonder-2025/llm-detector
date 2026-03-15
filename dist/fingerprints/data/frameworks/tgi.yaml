@@ -1,0 +1,69 @@
+name: TGI
+type: inference_engine
+description: HuggingFace Text Generation Inference
+version: "1.0"
+endpoints:
+    - path: /info
+      method: GET
+      description: Model information
+      weight: 0.2
+    - path: /health
+      method: GET
+      description: Health check
+      weight: 0.2
+    - path: /generate
+      method: POST
+      description: Generate text
+      weight: 0.2
+    - path: /generate_stream
+      method: POST
+      description: Stream generation
+      weight: 0.2
+headers:
+    - name: x-tgi-version
+      pattern: '[0-9]+\.[0-9]+'
+      required: false
+      weight: 0.25
+    - name: x-inference-time-ms
+      pattern: '[0-9]+'
+      required: false
+      weight: 0.25
+body_patterns:
+    - field: model_id
+      json_path: model_id
+      required: false
+      weight: 0.25
+    - field: model_pipeline_tag
+      json_path: model_pipeline_tag
+      required: false
+      weight: 0.25
+    - field: sha
+      json_path: sha
+      required: false
+      weight: 0.25
+error_patterns:
+    - pattern: model is overloaded
+      type: overloaded
+      weight: 0.15
+    - pattern: batch size too large
+      type: batch_error
+      weight: 0.15
+versions:
+    - pattern: 2.x
+      features:
+        - quantization
+        - speculative_decoding
+    - pattern: 1.x
+      features:
+        - basic_generation
+        - flash_attention
+deployment:
+    default_port: "8080"
+    docker_image: ghcr.io/huggingface/text-generation-inference
+    gpu_required: true
+    process_name: text-generation-launcher
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

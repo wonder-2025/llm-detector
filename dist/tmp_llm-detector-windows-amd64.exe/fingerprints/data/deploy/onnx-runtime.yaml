@@ -1,0 +1,37 @@
+name: ONNX Runtime
+type: model_runtime
+description: ONNX Runtime inference
+version: "1.0"
+endpoints:
+    - path: /v1/models
+      method: GET
+      description: Models
+      weight: 0.2
+    - path: /v1/models/model:predict
+      method: POST
+      description: Predict
+      weight: 0.2
+headers:
+    - name: x-request-id
+      pattern: '[a-zA-Z0-9-]+'
+      required: false
+      weight: 0.25
+body_patterns:
+    - field: model_version
+      json_path: model_version
+      required: false
+      weight: 0.25
+    - field: outputs
+      json_path: outputs
+      required: false
+      weight: 0.25
+error_patterns: []
+versions: []
+deployment:
+    default_port: "8001"
+    service_name: onnx-runtime
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

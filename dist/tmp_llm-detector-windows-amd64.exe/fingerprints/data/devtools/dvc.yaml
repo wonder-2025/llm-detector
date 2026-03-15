@@ -1,0 +1,33 @@
+name: DVC
+type: data_versioning
+description: Data Version Control
+version: "1.0"
+endpoints:
+    - path: /api
+      method: GET
+      description: DVC API
+      weight: 0.2
+    - path: /api/repos
+      method: GET
+      description: Repositories
+      weight: 0.2
+headers:
+    - name: x-request-id
+      pattern: '[a-zA-Z0-9-]+'
+      required: false
+      weight: 0.25
+body_patterns:
+    - field: repos
+      json_path: repos
+      required: false
+      weight: 0.25
+error_patterns: []
+versions: []
+deployment:
+    default_port: "443"
+    service_name: dvc
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7

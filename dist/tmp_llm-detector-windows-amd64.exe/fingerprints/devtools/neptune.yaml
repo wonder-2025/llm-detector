@@ -1,0 +1,41 @@
+name: Neptune
+type: experiment_tracking
+description: Neptune ML experiment tracking
+version: "1.0"
+endpoints:
+    - path: /api
+      method: GET
+      description: Neptune API
+      weight: 0.2
+    - path: /api/v1/projects
+      method: GET
+      description: Projects
+      weight: 0.2
+    - path: /api/v1/runs
+      method: GET
+      description: Runs
+      weight: 0.2
+headers:
+    - name: x-request-id
+      pattern: '[a-zA-Z0-9-]+'
+      required: false
+      weight: 0.25
+body_patterns:
+    - field: projects
+      json_path: projects
+      required: false
+      weight: 0.25
+    - field: sys
+      json_path: sys
+      required: false
+      weight: 0.25
+error_patterns: []
+versions: []
+deployment:
+    default_port: "443"
+    service_name: neptune
+scoring:
+    header_match: 0.3
+    body_keywords: 0.4
+    json_structure: 0.3
+    threshold: 0.7
